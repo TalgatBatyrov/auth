@@ -1,13 +1,22 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
+import { removeUser } from '../store/userSlice';
 
 const HomePage = () => {
-    // const auth = useSelector(state => state.auth.isAuth);
+    const dispath = useDispatch();
+    const { isAuth, email } = useSelector(state => state.user);
 
     return (
         <div>
-            Hello User
+            {isAuth
+                ?
+                <div>
+                    <h1>Wellcome  {email}</h1>
+                    <button onClick={() => dispath(removeUser())}>Log out from {email}</button>
+                </div>
+                :
+                <Navigate to={'/login'} />}
         </div>
     );
 };

@@ -1,24 +1,34 @@
-import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { setUser } from '../store/userSlice';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { setIsAuth, setUser } from '../store/userSlice';
 import Form from './Form';
 
 const Login = () => {
     const dispath = useDispatch();
-    const { email, token } = useSelector(state => state.user)
+    const navigate = useNavigate();
 
     const handleLogin = async (email, password) => {
         const auth = getAuth();
-        const response = await signInWithEmailAndPassword(auth, email, password)
-        dispath(setUser(response.user))
-        console.log(response.user);
+        try {
+            const response = await signInWithEmailAndPassword(auth, email, password);
+            dispath(setIsAuth(false));
+            dispath(setUser({
+                email: response.user.email,
+                token: response.user.accesToken,
+                id: response.user.uid
+            }));
+            dispath(setIsAuth(true));
+            navigate('/')
+        } catch (error) {
+            alert(error)
+        }
     }
 
     return (
         <div>
             <Form title={'sign in'} handleClick={handleLogin} />
-            {email ? email : 'no'}
         </div>
     );
 };

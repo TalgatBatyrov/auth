@@ -5,7 +5,8 @@ const userSlice = createSlice({
     initialState: {
         email: null,
         token: null,
-        id: null
+        id: null,
+        isAuth: false
     },
     reducers: {
         setUser(state, action) {
@@ -17,9 +18,13 @@ const userSlice = createSlice({
             state.email = null;
             state.token = null;
             state.id = null;
+            state.isAuth = false;
+        },
+        setIsAuth(state, action) {
+            state.isAuth = action.payload
         }
     }
 })
 
-export const { setUser, removeUser } = userSlice.actions;
+export const { setUser, removeUser, setIsAuth } = userSlice.actions;
 export default userSlice.reducer;
