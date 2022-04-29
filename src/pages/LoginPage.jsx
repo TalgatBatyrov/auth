@@ -1,9 +1,11 @@
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 
 const LoginPage = () => {
     return (
         <div>
-            Hello Login
+            <h1>Login</h1>
+            or <NavLink to={'/register'}>Register</NavLink>
         </div>
     );
 };
